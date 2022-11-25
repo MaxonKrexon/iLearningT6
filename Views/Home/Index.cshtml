@@ -1,0 +1,70 @@
+﻿@model IEnumerable<webapptask4.Areas.Identity.Data.ApplicationUser>
+
+@{  
+    ViewData["Title"] = "Home Page";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Model != null)
+{
+    <form method="post" asp-controller="Home" asp-method = "Index">
+<div>
+    <table align = center>
+        <td>
+            <button class="btn btn-danger" type = "submit" name = "action" value = "delete" > DELETE </button>
+        </td>
+        <td>
+            <button class="btn btn-default" type = "submit" name = "action" value = "block"> BLOCK </button>
+        </td>
+        <td>
+            <button class="btn btn-default" type = "submit" name = "action" value = "unblock"> UNBLOCK </button>
+        </td>
+    </table>
+</div>
+<div>
+<table class = "table">
+    <thead>
+        <th align=left><input type="checkbox" class= "js-check-all" ></th>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Registration date</th>
+        <th>Last login</th>
+        <th>Ban status</th>
+    </thead>
+    <tbody class = "js-check-all-target" >
+        @foreach(var user in Model){
+            <tr>
+            <td align=center><input type="checkbox" name="Id" value = @user.Id></td>
+            <td>@user.Id</td>
+            <td>@user.UserName</td>
+            <td>@user.Email</td>
+            <td>@user.RegistrationDate</td>
+            <td>@user.LastLogin</td>
+            <td align=center>@(user.LockoutEnd == null ? "OK" : "BANNED")</td>
+            </tr>
+        } 
+    </tbody> 
+</table>
+</div>
+</form>
+@section Scripts {
+    <script>
+        $(document).ready(function(){
+            $('.js-check-all').on('change', function(event) {
+
+            $('.js-check-all-target')
+                .find('input[type="checkbox"]:not(:disabled)')
+                .prop('checked',  $(event.target).prop('checked'));
+            });
+        })
+    </script>
+}
+}
+else
+{
+    <p>Please, log in to see table of users.</p>
+}
+
+
